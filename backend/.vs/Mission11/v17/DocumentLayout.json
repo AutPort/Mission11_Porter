@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\autjo\\OneDrive\\Desktop\\Mission11\\backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0FFF2B9A-4E4C-4011-A00A-74DB378BD7A4}|Mission11.API\\Mission11.API.csproj|c:\\users\\autjo\\onedrive\\desktop\\mission11\\backend\\mission11.api\\gitignore||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0FFF2B9A-4E4C-4011-A00A-74DB378BD7A4}|Mission11.API\\Mission11.API.csproj|solutionrelative:mission11.api\\gitignore||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "gitignore",
+              "DocumentMoniker": "C:\\Users\\autjo\\OneDrive\\Desktop\\Mission11\\backend\\Mission11.API\\gitignore",
+              "RelativeDocumentMoniker": "Mission11.API\\gitignore",
+              "ToolTip": "C:\\Users\\autjo\\OneDrive\\Desktop\\Mission11\\backend\\Mission11.API\\gitignore",
+              "RelativeToolTip": "Mission11.API\\gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-28T22:13:45.783Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
