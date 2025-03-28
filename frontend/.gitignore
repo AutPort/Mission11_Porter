@@ -25,3 +25,13 @@ dist-ssr
 
 # Ignore Visual Studio temporary files
 .vs/
+
+# ASP.NET / C#
+*.dll
+*.pdb
+*.exe
+*.obj
+*.user
+*.vs
+bin/
+obj/
