@@ -5,6 +5,7 @@ function BookList() {
   const [books, setBooks] = useState<book[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
 
   useEffect(() => {
@@ -13,10 +14,13 @@ function BookList() {
         `https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}`
       );
       const data = await response.json();
+
+      console.log('API Response:', data);
+      console.log('Total Books:', data.totalBooks);
+
       setBooks(data.books);
-      setTotalPages(
-        data.totalNumBooks ? Math.ceil(data.totalNumBooks / pageSize) : 1
-      );
+      setTotalItems(data.totalBooks);
+      setTotalPages(Math.ceil(data.totalBooks / pageSize));
     };
 
     fetchBooks();
@@ -60,26 +64,34 @@ function BookList() {
         </div>
       ))}
 
-      <button disabled={pageNum === 1} onClick={() => setPageNum(pageNum - 1)}>
-        Previous
-      </button>
-
-      {[...Array(totalPages)].map((_, index) => (
+      <div className='d-flex justify-content-center mt-4'>
         <button
-          key={index + 1}
-          onClick={() => setPageNum(index + 1)}
-          disabled={pageNum === index + 1}
+          className='btn btn-outline-primary me-2'
+          disabled={pageNum === 1}
+          onClick={() => setPageNum(Math.max(1, pageNum - 1))}
         >
-          {index + 1}
+          Previous
         </button>
-      ))}
 
-      <button
-        disabled={pageNum === totalPages}
-        onClick={() => setPageNum(pageNum + 1)}
-      >
-        Next
-      </button>
+        {Array.from({ length: Math.max(1, totalPages) }, (_, i) => (
+          <button
+            key={i + 1}
+            className={`btn ${pageNum === i + 1 ? 'btn-primary' : 'btn-outline-primary'} mx-1`}
+            onClick={() => setPageNum(i + 1)}
+            disabled={pageNum === i + 1}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          className='btn btn-outline-primary ms-2'
+          disabled={pageNum === totalPages}
+          onClick={() => setPageNum(Math.min(totalPages, pageNum + 1))}
+        >
+          Next
+        </button>
+      </div>
 
       <br />
       <label>
