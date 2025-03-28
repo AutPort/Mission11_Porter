@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
 import { book } from './types/book';
 
-function BookList() {
+function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [books, setBooks] = useState<book[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
-  const [totalItems, setTotalItems] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   useEffect(() => {
     const fetchBooks = async () => {
+      const categoryParams = selectedCategories
+        .map((cat) => `bookCategories=${encodeURIComponent(cat)}`)
+        .join('&');
+
       const response = await fetch(
-        `https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}`
+        `https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
       );
       const data = await response.json();
 
@@ -20,12 +23,11 @@ function BookList() {
       console.log('Total Books:', data.totalBooks);
 
       setBooks(data.books);
-      setTotalItems(data.totalBooks);
       setTotalPages(Math.ceil(data.totalBooks / pageSize));
     };
 
     fetchBooks();
-  }, [pageSize, pageNum]);
+  }, [pageSize, pageNum, selectedCategories]);
 
   const sortedBooks = books.sort((a, b) => {
     if (sortOrder === 'asc') {
