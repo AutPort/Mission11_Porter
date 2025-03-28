@@ -56,7 +56,7 @@ function BookList() {
                 {b.pageCount}
               </li>
               <li>
-                <strong>Price: </strong>
+                <strong>Price: $</strong>
                 {b.price}
               </li>
             </ul>
