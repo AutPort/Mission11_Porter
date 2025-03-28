@@ -28,7 +28,29 @@
               "format": "int32",
               "default": 1
             }
+          },
+          {
+            "name": "bookCategories",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Book/GetBookCategories": {
+      "get": {
+        "tags": [
+          "Book"
         ],
         "responses": {
           "200": {
