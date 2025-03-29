@@ -134,5 +134,4 @@ C:\Users\autjo\OneDrive\Desktop\Mission11\backend\Mission11.API\obj\Debug\net8.0
 C:\Users\autjo\OneDrive\Desktop\Mission11\backend\Mission11.API\obj\Debug\net8.0\Mission11.API.pdb
 C:\Users\autjo\OneDrive\Desktop\Mission11\backend\Mission11.API\obj\Debug\net8.0\Mission11.API.genruntimeconfig.cache
 C:\Users\autjo\OneDrive\Desktop\Mission11\backend\Mission11.API\obj\Debug\net8.0\ref\Mission11.API.dll
-C:\Users\autjo\OneDrive\Desktop\Mission11\backend\Mission11.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\autjo\OneDrive\Desktop\Mission11\backend\Mission11.API\obj\Debug\net8.0\Mission11.API.sourcelink.json
