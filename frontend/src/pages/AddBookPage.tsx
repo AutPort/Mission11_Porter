@@ -5,15 +5,14 @@ import { useState } from 'react';
 
 function AddBookPage() {
   const navigate = useNavigate();
-  const { title, bookID } = useParams();
+  const { title, bookID, price } = useParams();
   const { addToCart } = useCart();
-  const [donationAmount, setDonationAmount] = useState<number>(0);
 
   const handleAddToCart = () => {
     const newItem: CartItem = {
       bookID: Number(bookID),
       title: title || 'No Book Found',
-      price,
+      price: Number(price),
     };
     addToCart(newItem);
     navigate('/cart');
