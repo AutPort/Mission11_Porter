@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { book } from '../types/book';
+import { Book } from '../types/book';
 import { useNavigate } from 'react-router-dom';
 
 function BookList({ selectedCategories }: { selectedCategories: string[] }) {
-  const [books, setBooks] = useState<book[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);

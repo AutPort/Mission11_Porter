@@ -1,13 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import WelcomeBand from '../components/WelcomeBand';
-import { userCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 import { CartItem } from '../types/CartItem';
 import { useState } from 'react';
 
 function AddBookPage() {
   const navigate = useNavigate();
   const { title, bookID } = useParams();
-  const { addToCart } = userCart();
+  const { addToCart } = useCart();
   const [donationAmount, setDonationAmount] = useState<number>(0);
 
   const handleAddToCart = () => {

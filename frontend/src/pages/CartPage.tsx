@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { CartItem } from '../types/CartItem';
-import { userCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 
 function CartPage() {
   const navigate = useNavigate();
-  const { cart, removeFromCart } = userCart();
+  const { cart, removeFromCart } = useCart();
 
   return (
     <>

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { userCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 
 const CartSummary = () => {
   const navigate = useNavigate();
-  const { cart } = userCart();
+  const { cart } = useCart();
   const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
