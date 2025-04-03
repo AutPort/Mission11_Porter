@@ -26,20 +26,10 @@ function AddBookPage() {
       <h2>{title}</h2>
       <p>Price: {price}</p>
       <div>
-        {/* display price */}
-        {/* <input
-          type='number'
-          placeholder='Enter donation amount'
-          value={donationAmount}
-          onChange={(x) => setDonationAmount(Number(x.target.value))}
-        /> */}
         <button className='btn btn-success' onClick={handleAddToCart}>
           Add to Cart
         </button>
-        <button onClick={handleAddToCart}>Add to Cart</button>
       </div>
-      <button onClick={() => navigate(-1)}>Go Back</button>
-
       <button className='btn btn-secondary' onClick={() => navigate(-1)}>
         Go Back
       </button>
