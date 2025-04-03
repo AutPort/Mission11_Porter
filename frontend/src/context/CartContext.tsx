@@ -16,16 +16,28 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const addToCart = (item: CartItem) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((c) => c.bookID === item.bookID);
-      const updatedCart = prevCart.map((c) =>
-        c.bookID === item.bookID ? { ...c, price: c.price + item.price } : c
-      );
 
-      return existingItem ? updatedCart : [...prevCart, item];
+      if (existingItem) {
+        return prevCart.map((c) =>
+          c.bookID === item.bookID
+            ? { ...c, quantity: c.quantity + 1 } // Increment quantity
+            : c
+        );
+      } else {
+        return [...prevCart, { ...item, quantity: 1 }]; // Add new item with quantity = 1
+      }
     });
   };
 
   const removeFromCart = (bookID: number) => {
-    setCart((prevCart) => prevCart.filter((c) => c.bookID !== bookID));
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((c) =>
+            c.bookID === bookID ? { ...c, quantity: c.quantity - 1 } : c
+          )
+          .filter((c) => c.quantity > 0) // Remove item if quantity reaches 0
+    );
   };
 
   const clearCart = () => {
