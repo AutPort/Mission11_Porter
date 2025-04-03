@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Book } from '../types/book';
 import { fetchBooks } from '../api/BooksAPI';
 import Pagination from '../components/Pagination';
+import NewBookForm from '../components/NewBookForm';
 
 const AdminBooksPage = () => {
   const [pageSize, setPageSize] = useState<number>(10);
@@ -10,6 +11,7 @@ const AdminBooksPage = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const loadBooks = async () => {
@@ -33,8 +35,29 @@ const AdminBooksPage = () => {
   return (
     <div>
       <h1>Admin - Books</h1>
-      <table>
-        <thead>
+
+      {!showForm && (
+        <button
+          className='btn btn-success mb-3'
+          onClick={() => setShowForm(true)}
+        >
+          Add Book
+        </button>
+      )}
+
+      {showForm && (
+        <NewBookForm
+          onSuccess={() => {
+            setShowForm(false);
+            fetchBooks(pageSize, pageNum, []).then((data) =>
+              setBooks(data.books)
+            );
+          }}
+          onCancel={() => setShowForm(false)}
+        />
+      )}
+      <table className='table table-border table-striped'>
+        <thead className='table-dark'>
           <tr>
             <th>ID</th>
             <th>Title</th>
@@ -44,6 +67,7 @@ const AdminBooksPage = () => {
             <th>Classification/Category</th>
             <th>Number of Pages</th>
             <th>Price</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -60,12 +84,18 @@ const AdminBooksPage = () => {
               <td>{b.pageCount}</td>
               <td>${b.price}</td>
               <td>
-                <button onClick={() => console.log(`Edit book ${b.bookID}`)}>
+                <button
+                  className='btn btn-primary btn-sm w-100 mb-1'
+                  onClick={() => console.log(`Edit book ${b.bookID}`)}
+                >
                   Edit
                 </button>
-              </td>
-              <td>
-                <button>Delete</button>
+                <button
+                  className='btn btn-danger btn-sm w-100 mb-1'
+                  onClick={() => console.log(`Delete book ${b.bookID}`)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
