@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Book } from '../types/book';
 import { useNavigate } from 'react-router-dom';
+import { fetchBooks } from '../api/BooksAPI';
+import Pagination from './Pagination';
 
 function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [books, setBooks] = useState<Book[]>([]);
@@ -9,27 +11,28 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      const categoryParams = selectedCategories
-        .map((cat) => `bookCategories=${encodeURIComponent(cat)}`)
-        .join('&');
-
-      const response = await fetch(
-        `https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
-      );
-      const data = await response.json();
-
-      console.log('API Response:', data);
-      console.log('Total Books:', data.totalBooks);
-
-      setBooks(data.books);
-      setTotalPages(Math.ceil(data.totalBooks / pageSize));
+    const loadBooks = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchBooks(pageSize, pageNum, selectedCategories);
+        setBooks(data.books);
+        setTotalPages(Math.ceil(data.totalBooks / pageSize));
+      } catch (error) {
+        setError((error as Error).message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchBooks();
+    loadBooks();
   }, [pageSize, pageNum, selectedCategories]);
+
+  if (loading) return <p>Loading books...</p>;
+  if (error) return <p className='test-red-500'>Error: {error}</p>;
 
   const sortedBooks = books.sort((a, b) => {
     if (sortOrder === 'asc') {
@@ -84,58 +87,25 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
 
             <button
               className='btn btn-success'
-              onClick={() => navigate(`/addBook/${b.title}/${b.bookID}/${b.price}`)}
+              onClick={() =>
+                navigate(`/addBook/${b.title}/${b.bookID}/${b.price}`)
+              }
             >
               Checkout Book
             </button>
           </div>
         </div>
       ))}
-
-      <div className='d-flex justify-content-center mt-4'>
-        <button
-          className='btn btn-outline-primary me-2'
-          disabled={pageNum === 1}
-          onClick={() => setPageNum(Math.max(1, pageNum - 1))}
-        >
-          Previous
-        </button>
-
-        {Array.from({ length: Math.max(1, totalPages) }, (_, i) => (
-          <button
-            key={i + 1}
-            className={`btn ${pageNum === i + 1 ? 'btn-primary' : 'btn-outline-primary'} mx-1`}
-            onClick={() => setPageNum(i + 1)}
-            disabled={pageNum === i + 1}
-          >
-            {i + 1}
-          </button>
-        ))}
-
-        <button
-          className='btn btn-outline-primary ms-2'
-          disabled={pageNum === totalPages}
-          onClick={() => setPageNum(Math.min(totalPages, pageNum + 1))}
-        >
-          Next
-        </button>
-      </div>
-
-      <br />
-      <label>
-        Results per page:
-        <select
-          value={pageSize}
-          onChange={(s) => {
-            setPageSize(Number(s.target.value));
-            setPageNum(1);
-          }}
-        >
-          <option value='5'>5</option>
-          <option value='10'>10</option>
-          <option value='20'>20</option>
-        </select>
-      </label>
+      <Pagination
+        currentPage={pageNum}
+        totalPages={totalPages}
+        pageSize={pageSize}
+        onPageChange={setPageNum}
+        onPageSizeChange={(newSize) => {
+          setPageSize(newSize);
+          setPageNum(1);
+        }}
+      />
     </>
   );
 }
