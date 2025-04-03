@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { CartItem } from '../types/CartItem';
-import { useState } from 'react';
 
 function AddBookPage() {
   const navigate = useNavigate();
@@ -15,8 +14,11 @@ function AddBookPage() {
       price: Number(price),
       quantity: Number(quantity),
     };
+
     addToCart(newItem);
-    navigate('/cart');
+
+    // Navigate to the cart page and pass a toast message
+    navigate('/cart', { state: { toastMessage: `Added "${title}" to cart!` } });
   };
 
   return (
@@ -24,16 +26,8 @@ function AddBookPage() {
       <h2>{title}</h2>
       <p>Price: {price}</p>
       <div>
-        {/* display price */}
-        {/* <input
-          type='number'
-          placeholder='Enter donation amount'
-          value={donationAmount}
-          onChange={(x) => setDonationAmount(Number(x.target.value))}
-        /> */}
         <button onClick={handleAddToCart}>Add to Cart</button>
       </div>
-
       <button onClick={() => navigate(-1)}>Go Back</button>
     </>
   );
