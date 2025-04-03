@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Book } from '../types/book';
 import { useNavigate } from 'react-router-dom';
+import BookModal from './BookModal'; // Import the modal
 
 function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [books, setBooks] = useState<Book[]>([]);
@@ -8,6 +9,8 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null); // State for selected book
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,9 +23,6 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
         `https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
       );
       const data = await response.json();
-
-      console.log('API Response:', data);
-      console.log('Total Books:', data.totalBooks);
 
       setBooks(data.books);
       setTotalPages(Math.ceil(data.totalBooks / pageSize));
@@ -38,6 +38,16 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
       return b.title.localeCompare(a.title);
     }
   });
+
+  const openModal = (book: Book) => {
+    setSelectedBook(book);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedBook(null);
+  };
 
   return (
     <>
@@ -61,22 +71,6 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
                 {b.author}
               </li>
               <li>
-                <strong>Publisher: </strong>
-                {b.publisher}
-              </li>
-              <li>
-                <strong>ISBN: </strong>
-                {b.isbn}
-              </li>
-              <li>
-                <strong>Classification/Category: </strong>
-                {b.classification}/{b.category}
-              </li>
-              <li>
-                <strong>Number of Pages: </strong>
-                {b.pageCount}
-              </li>
-              <li>
                 <strong>Price: $</strong>
                 {b.price}
               </li>
@@ -84,9 +78,17 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
 
             <button
               className='btn btn-success'
-              onClick={() => navigate(`/addBook/${b.title}/${b.bookID}/${b.price}`)}
+              onClick={() =>
+                navigate(`/addBook/${b.title}/${b.bookID}/${b.price}`)
+              }
             >
               Checkout Book
+            </button>
+            <button
+              className='btn btn-info ms-2'
+              onClick={() => openModal(b)} // Open modal with the selected book
+            >
+              View Details
             </button>
           </div>
         </div>
@@ -136,6 +138,9 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
           <option value='20'>20</option>
         </select>
       </label>
+
+      {/* Modal Component */}
+      <BookModal onClose={closeModal} book={selectedBook!} />
     </>
   );
 }

@@ -37,8 +37,13 @@ function CartPage() {
           )}
         </div>
         <h3>Total: ${totalAmount.toFixed(2)}</h3>
-        <button>Checkout</button>
-        <button onClick={() => navigate('/books')}>Continue Browsing</button>
+        <button className='btn btn-secondary'>Checkout</button>
+        <button
+          className='btn btn-secondary'
+          onClick={() => navigate('/books')}
+        >
+          Continue Browsing
+        </button>
       </div>
     </>
   );
