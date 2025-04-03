@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function AddBookPage() {
   const navigate = useNavigate();
-  const { title, bookID, price } = useParams();
+  const { title, bookID, price, quantity } = useParams();
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
@@ -13,6 +13,7 @@ function AddBookPage() {
       bookID: Number(bookID),
       title: title || 'No Book Found',
       price: Number(price),
+      quantity: Number(quantity),
     };
     addToCart(newItem);
     navigate('/cart');
