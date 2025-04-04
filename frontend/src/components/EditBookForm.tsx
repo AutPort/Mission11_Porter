@@ -96,8 +96,10 @@ const EditBookForm = ({ book, onSuccess, onCancel }: EditBookFormProps) => {
           onChange={handleChange}
         />
       </label>
-      <button type='submit'>Update Book</button>
-      <button type='button' onClick={onCancel}>
+      <button className='btn btn-secondary' type='submit'>
+        Update Book
+      </button>
+      <button className='btn btn-secondary' type='button' onClick={onCancel}>
         Cancel
       </button>
     </form>

@@ -25,10 +25,14 @@ function AddBookPage() {
       <h2>{title}</h2>
       <p>Price: {price}</p>
       <div>
-        <button onClick={handleAddToCart}>Add to Cart</button>
+        <button className='btn btn-success' onClick={handleAddToCart}>
+          Add to Cart
+        </button>
       </div>
 
-      <button onClick={() => navigate(-1)}>Go Back</button>
+      <button className='btn btn-secondary' onClick={() => navigate(-1)}>
+        Go Back
+      </button>
     </>
   );
 }
