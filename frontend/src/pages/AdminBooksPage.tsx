@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Book } from '../types/book';
-import { fetchBooks } from '../api/BooksAPI';
+import { deleteBook, fetchBooks } from '../api/BooksAPI';
 import Pagination from '../components/Pagination';
 import NewBookForm from '../components/NewBookForm';
+import EditBookForm from '../components/EditBookForm';
 
 const AdminBooksPage = () => {
   const [pageSize, setPageSize] = useState<number>(10);
@@ -12,6 +13,7 @@ const AdminBooksPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
 
   useEffect(() => {
     const loadBooks = async () => {
@@ -28,6 +30,20 @@ const AdminBooksPage = () => {
 
     loadBooks();
   }, [pageSize, pageNum]);
+
+  const handleDelete = async (bookID: number) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this book?'
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await deleteBook(bookID);
+      setBooks(books.filter((b) => b.bookID !== bookID));
+    } catch (error) {
+      alert('Failed to delete book. Please try again.');
+    }
+  };
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p className='text-red-500'>Error: {error}</p>;
@@ -56,6 +72,20 @@ const AdminBooksPage = () => {
           onCancel={() => setShowForm(false)}
         />
       )}
+
+      {editingBook && (
+        <EditBookForm
+          book={editingBook}
+          onSuccess={() => {
+            setEditingBook(null);
+            fetchBooks(pageSize, pageNum, []).then((data) =>
+              setBooks(data.books)
+            );
+          }}
+          onCancel={() => setEditingBook(null)}
+        />
+      )}
+
       <table className='table table-border table-striped'>
         <thead className='table-dark'>
           <tr>
@@ -86,13 +116,13 @@ const AdminBooksPage = () => {
               <td>
                 <button
                   className='btn btn-primary btn-sm w-100 mb-1'
-                  onClick={() => console.log(`Edit book ${b.bookID}`)}
+                  onClick={() => setEditingBook(b)}
                 >
                   Edit
                 </button>
                 <button
                   className='btn btn-danger btn-sm w-100 mb-1'
-                  onClick={() => console.log(`Delete book ${b.bookID}`)}
+                  onClick={() => handleDelete(b.bookID)}
                 >
                   Delete
                 </button>
