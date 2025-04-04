@@ -5,6 +5,9 @@
 import { useEffect, useState } from 'react';
 import './CategoryFilter.css';
 
+const API_URL =
+  'https://mission13-autumnporter-backend-ctf6evarbvdrbyb8.eastus-01.azurewebsites.net/book';
+
 function CategoryFilter({
   selectedCategories,
   setSelectedCategories,
@@ -18,7 +21,7 @@ function CategoryFilter({
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          'https://localhost:5000/Book/GetBookCategories' // changed to correct route
+          `${API_URL}/GetBookCategories` // changed to correct route
         );
         const data = await response.json();
         console.log('Fetched categories:', data);
